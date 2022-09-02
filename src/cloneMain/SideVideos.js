@@ -1,14 +1,26 @@
 import React from 'react';
 
-const SideVideos = ({ video, onVideoSelect }) => {
+const SideVideos = ({ video, onVideoSelect, main }) => {
+
+     const handleChange = () => {
+          if(video.snippet.title.length > 15){
+               onVideoSelect(video)
+               main(true)
+          }else{
+               alert('asfasf')
+          }
+     }
+
      return (
           <>
-               <div className="videoItems" onClick={() => onVideoSelect(video)} >
-                    <img src={video.snippet.thumbnails.medium.url} alt="overlay" style={{ marginRight: "20px"}} />
-                    <div className="titleVideo">
-                         <p>{video.snippet.title.slice(0,48)}{video.snippet.title.length > 43 ? '' : '...'}</p>
+               <a href="#header" style={{ all: 'unset' }}>
+                    <div className={`videoItems ${video.snippet.title.length < 15 ? 'channel' : ''}`} onClick={handleChange} >
+                         <img src={video.snippet.thumbnails.medium.url} alt="overlay" className={video.snippet.title.length < 15 ? 'radius' : ''} style={{ marginRight: "20px" }} />
+                         <div className="titleVideo">
+                              <p>{video.snippet.title}</p>
+                         </div>
                     </div>
-               </div>
+               </a>
           </>
      );
 };

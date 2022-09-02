@@ -8,33 +8,36 @@ import ListVideos from './cloneMain/ListVideos';
 const App = () => {
   const [videos, setVideos] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState({ id: {}, snippet: {} });
+  const [videoMain, setVideoMain] = useState(false)
 
   async function videoSubmit(searchTerm) {
-    const {data: { items: videos } } = await URL.get("search", {
+    const { data: { items: videos } } = await URL.get("search", {
       params: {
         part: "snippet",
-        maxResults: 30,
+        maxResults: 60,
         key: "AIzaSyC4HtSwSzpwlqoHnERzQLnCX5oRrljl1Uk",
         q: searchTerm
       }
     });
 
-    console.log(videos);
     setVideos(videos);
-    setSelectedVideos(videos[2]);
+    setVideoMain(false)
   }
 
   return (
     <>
-      <div className="searchSec">
+      <div className="searchSec" id={'header'}>
         <Search onSubmit={videoSubmit} />
       </div>
       <div className="videoMain">
-        <div className="videoSec">
+        {
+          videoMain ? <div className="videoSec">
           <Video video={selectedVideos} />
         </div>
-        <div className="videoLists">
-          <ListVideos videos={videos} onVideoSelect={setSelectedVideos} />
+        : ''
+        }
+        <div className="videoLists mainVideoApp">
+          <ListVideos main={setVideoMain} videos={videos} onVideoSelect={setSelectedVideos} />
         </div>
       </div>
     </>
